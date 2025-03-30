@@ -93,7 +93,7 @@ class AddressBook(UserDict):  # define class AddressBook
         else:
             raise KeyError(f"Contact {name} not found.")
 
-    def get_upcoming_birthdays(self):
+    def get_upcoming_birthdays(self): # define function for find users with upcoming birthday in next 7 days
         today = dt.datetime.now().date()
         upcoming_birthdays = []
         for record in self.data.values():
@@ -190,7 +190,7 @@ def delete_contact(args, book):  # define function for delete contacts
 
 
 @input_error
-def add_birthday(args, book):
+def add_birthday(args, book):  # define function for add birthday
     if len(args) < 2:
         raise ValueError("Give me name and birthday please.")
     name, birthday = args[0], args[1]
@@ -209,7 +209,7 @@ def all_contacts(book):  # define function for print list of all contacts
             print(record)
 
 @input_error
-def show_birthday(args, book):
+def show_birthday(args, book):  # define function for show birthday
     if len(args) < 1:
         raise ValueError("Give me name please.")
     name = args[0]
