@@ -92,7 +92,7 @@ class AddressBook(UserDict):  # define class AddressBook
             del self.data[name]
         else:
             raise KeyError(f"Contact {name} not found.")
-    
+
     def get_upcoming_birthdays(self):
         today = dt.datetime.now().date()
         upcoming_birthdays = []
@@ -208,11 +208,23 @@ def all_contacts(book):  # define function for print list of all contacts
         for record in book.data.values():
             print(record)
 
+@input_error
+def show_birthday(args, book):
+    if len(args) < 1:
+        raise ValueError("Give me name please.")
+    name = args[0]
+    record = book.find(name)
+    if not record:
+        raise KeyError(f"Contact {name} not found.")
+    if record.birthday:
+        return f"{name}'s birthday is on {record.birthday}"
+    else:
+        return f"No birthday set for {name}."
 
 def main():  # Define main function
     book = AddressBook()
     print(
-        "Welcome to the assistant bot!\nYou can use command hello, add, change, phone, all, delete, add-birthday, upcoming-birthdays or exit/close"
+        "Welcome to the assistant bot!\nYou can use command hello, add, change, phone, all, delete, add-birthday, birthdays, show-birthday or exit/close"
     )
     while True:
         user_input = input(f"Please input command:").strip()
@@ -225,7 +237,7 @@ def main():  # Define main function
             continue
         if command == "hello":
             print(
-                "How can I help you?\n You can use command hello, add, change, phone, all, delete, add-birthday, upcoming-birthdays or exit/close"
+                "How can I help you?\n You can use command hello, add, change, phone, all, delete, add-birthday, birthdays, show-birthday or exit/close"
             )
         elif command == "add":
             print(add_contact(args, book))
@@ -239,8 +251,10 @@ def main():  # Define main function
             print(delete_contact(args, book))
         elif command == "add-birthday":
             print(add_birthday(args, book))
-        elif command == "upcoming-birthdays":
+        elif command == "birthdays":
             book.get_upcoming_birthdays()
+        elif command == "show-birthday":
+            print(show_birthday(args, book))
         elif command in ["exit", "close"]:
             print(f"Goodbye!")
             break
